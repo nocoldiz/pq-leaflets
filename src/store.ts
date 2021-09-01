@@ -1,13 +1,12 @@
 import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk"
-import Reducers from "./reducers";
+import RootReducer from "./reducers/rootReducer";
 
 const Store = createStore(
-    Reducers,
-    {},
+    RootReducer,
     applyMiddleware(thunk)
 )
 
-export type RootState = ReturnType<typeof Reducers>
+export type RootState = ReturnType<typeof RootReducer>
 
 export default Store

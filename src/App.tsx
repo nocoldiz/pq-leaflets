@@ -19,7 +19,6 @@ function App() {
     sort: "priority,expTimestamp,distance,retailerName,leafletName"
   });
   const data = useSelector((state: RootState) => state);
-  console.log(data.leaflets);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setFilter({
     offset: 0,
@@ -31,20 +30,23 @@ function App() {
     sort: "priority,expTimestamp,distance,retailerName,leafletName"
   });
   useEffect(() => {
-    // Update the document title using the browser API
     dispatch(fetchLeaflets(filter))
   }, []);
 
-  //      <button onClick={handleSubmit}>Search</button>
+  useEffect(() => {
+    let ret = data.api?.response;
+    if (ret) {
+      console.log(ret)
+    }
+  }, [data]);
+
   return (
     <div className="App">
       <Container fluid>
         <Row>
           <Col sm={12} md={3}></Col>
         </Row>
-
       </Container>
-
       <input type="text" onChange={handleChange} />
     </div>
   );

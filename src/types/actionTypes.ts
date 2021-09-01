@@ -6,9 +6,9 @@ export enum ActionType {
     FETCH_LEAFLETS_ERROR = "fetch_leaflets_error",
 }
 
-export interface StateType {
+export interface InitialState {
     loading: boolean,
-    response: Response,
+    response?: Response,
     error: string
 }
 interface FetchLeafletsPendingAction {

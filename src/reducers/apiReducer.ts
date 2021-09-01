@@ -1,11 +1,11 @@
-import { LeafletsDispatchTypes, ActionType, } from "../types/actionTypes"
-const initialState = {
+import { LeafletsDispatchTypes, ActionType, InitialState } from "../types/actionTypes"
+const initialState: InitialState = {
     loading: false,
-    response: {},
-    error: "null"
+    response: undefined,
+    error: "error"
 };
 
-const reducer = (state: Object = initialState, action: LeafletsDispatchTypes): Object => {
+const apiReducer = (state: InitialState = initialState, action: LeafletsDispatchTypes): InitialState => {
     switch (action.type) {
         case ActionType.FETCH_LEAFLETS_PENDING:
             return {
@@ -29,4 +29,4 @@ const reducer = (state: Object = initialState, action: LeafletsDispatchTypes): O
     }
 }
 
-export default reducer
+export default apiReducer
