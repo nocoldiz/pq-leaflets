@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
 import { fetchLeaflets } from "./actions";
-import { Request } from "./types/dataTypes";
+import { ApiRequest } from "./types/dataTypes";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 function App() {
   const dispatch = useDispatch();
-  const [filter, setFilter] = useState<Request>({
+  const [filter, setFilter] = useState<ApiRequest>({
     offset: 0,
     limit: 30,
     name: "",
@@ -18,7 +18,7 @@ function App() {
     maxDistance: 0,
     sort: "priority,expTimestamp,distance,retailerName,leafletName"
   });
-  const data = useSelector((state: RootState) => state);
+  const apiState = useSelector((state: RootState) => state.api);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setFilter({
     offset: 0,
@@ -33,18 +33,16 @@ function App() {
     dispatch(fetchLeaflets(filter))
   }, []);
 
-  useEffect(() => {
-    let ret = data.api?.response;
-    if (ret) {
-      console.log(ret)
-    }
-  }, [data]);
+  const listItems = apiState.response?.leaflets.map((item) =>
+    <Col sm={12} md={3}>{item.name}</Col>
+  );
+
 
   return (
     <div className="App">
       <Container fluid>
         <Row>
-          <Col sm={12} md={3}></Col>
+          {listItems}
         </Row>
       </Container>
       <input type="text" onChange={handleChange} />

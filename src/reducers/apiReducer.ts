@@ -1,11 +1,9 @@
-import { LeafletsDispatchTypes, ActionType, InitialState } from "../types/actionTypes"
+import { ApiDispatchTypes, ActionType, InitialState } from "../types/actionTypes"
 const initialState: InitialState = {
     loading: false,
-    response: undefined,
-    error: "error"
 };
 
-const apiReducer = (state: InitialState = initialState, action: LeafletsDispatchTypes): InitialState => {
+const apiReducer = (state: InitialState = initialState, action: ApiDispatchTypes): InitialState => {
     switch (action.type) {
         case ActionType.FETCH_LEAFLETS_PENDING:
             return {
@@ -16,7 +14,7 @@ const apiReducer = (state: InitialState = initialState, action: LeafletsDispatch
             return {
                 ...state,
                 loading: false,
-                response: action.payload
+                response: action.payload,
             };
         case ActionType.FETCH_LEAFLETS_ERROR:
             return {

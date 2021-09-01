@@ -1,6 +1,6 @@
 
 
-export interface Request {
+export interface ApiRequest {
     offset?: Number;
     limit?: Number;
     name?: String;
@@ -37,14 +37,12 @@ interface LeafletItem {
     retailer: RetailerItem;
 }
 
-export interface Response {
+export interface ApiResponse {
     query: QueryItem;
     current: Number;
     total: Number;
     count: Number;
-    leaflets: {
-        [key: string]: LeafletItem
-    };
+    leaflets: Array<LeafletItem>
     error: String
 }
 
