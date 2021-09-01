@@ -8,6 +8,6 @@ const Store = createStore(
     applyMiddleware(thunk)
 )
 
-export type RootStore = ReturnType<typeof Reducers>
+export type RootState = ReturnType<typeof Reducers>
 
 export default Store

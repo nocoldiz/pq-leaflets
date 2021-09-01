@@ -1,12 +1,11 @@
-import { LeafletsDispatchTypes, ActionType } from "../types/actionTypes"
+import { LeafletsDispatchTypes, ActionType, } from "../types/actionTypes"
 const initialState = {
     loading: false,
-    leaflets: [],
-    error: null
+    response: {},
+    error: "null"
 };
-//https://dev.to/markusclaus/fetching-data-from-an-api-using-reactredux-55ao
 
-const reducer = (state: any = initialState, action: LeafletsDispatchTypes): any => {
+const reducer = (state: Object = initialState, action: LeafletsDispatchTypes): Object => {
     switch (action.type) {
         case ActionType.FETCH_LEAFLETS_PENDING:
             return {
@@ -17,7 +16,7 @@ const reducer = (state: any = initialState, action: LeafletsDispatchTypes): any 
             return {
                 ...state,
                 loading: false,
-                leaflets: action.payload
+                response: action.payload
             };
         case ActionType.FETCH_LEAFLETS_ERROR:
             return {

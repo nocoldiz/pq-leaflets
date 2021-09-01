@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "./store";
+import { RootState } from "./store";
 import { fetchLeaflets } from "./actions";
+import { Request } from "./types/dataTypes";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 function App() {
   const dispatch = useDispatch();
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useState<Request>({
     offset: 0,
     limit: 30,
     name: "",
@@ -14,8 +18,9 @@ function App() {
     maxDistance: 0,
     sort: "priority,expTimestamp,distance,retailerName,leafletName"
   });
-  const leaflets = useSelector((state: RootStore) => state.leaflets);
-  
+  const data = useSelector((state: RootState) => state);
+  console.log(data.leaflets);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setFilter({
     offset: 0,
     limit: 30,
@@ -29,12 +34,17 @@ function App() {
     // Update the document title using the browser API
     dispatch(fetchLeaflets(filter))
   }, []);
+
   //      <button onClick={handleSubmit}>Search</button>
-
-
-  console.log("Leaflets:", leaflets);
   return (
     <div className="App">
+      <Container fluid>
+        <Row>
+          <Col sm={12} md={3}></Col>
+        </Row>
+
+      </Container>
+
       <input type="text" onChange={handleChange} />
     </div>
   );
