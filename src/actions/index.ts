@@ -34,7 +34,7 @@ export const fetchLeaflets = (req: Request) => async (dispatch: Dispatch<Leaflet
       dispatch({
         type: ActionType.FETCH_LEAFLETS_ERROR,
         loading: false,
-        error: e
+        error: "errore generico"
       })
     }
   };

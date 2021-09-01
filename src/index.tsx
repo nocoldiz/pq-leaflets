@@ -2,14 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { Provider } from 'react-redux';
-import { store } from './store';
+import Store from './store';
 
 import './scss/style.scss';
 
 const Main: React.FC = () => (
-  <Provider store={store}>
+  <Provider store={Store}>
     <App />
   </Provider>
+
 );
 
 ReactDOM.render(<Main />, document.getElementById('root'));

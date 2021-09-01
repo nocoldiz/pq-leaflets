@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
-import leafletsReducer from "./leaftletsReducer"
+import leafletsReducer from "./leaftletsReducer";
 
 
-const reducers = combineReducers({
-    leafletsReducer: leafletsReducer
-})
+const Reducers = combineReducers({
+    leaflets: leafletsReducer
+});
 
-export default reducers
+export default Reducers;
 
-export type RootState = ReturnType<typeof reducers>
+export type RootState = ReturnType<typeof Reducers>;
