@@ -4,7 +4,7 @@ import SectionHeader from '@src/components/SectionHeader';
 
 const Home: React.FC = () => (
   <Layout>
-    <SectionHeader title="Welcome to your new React App!" description="Made with ❤️" />
+    <SectionHeader title="Welcome to your new React App!" description="Made withd ❤️" />
     <p>
       Reference <code>README.md</code> for build instructions.
     </p>
