@@ -1,7 +1,16 @@
 import { ApiDispatchTypes, ActionType, InitialState } from "../types/actionTypes"
 const initialState: InitialState = {
     loading: false,
-    leaflets: []
+    leaflets: [],
+    filters: {
+        offset: 0,
+        limit: 30,
+        name: "",
+        retailerId: "",
+        excludeExpired: false,
+        maxDistance: 0,
+        sort: "priority,expTimestamp,distance,retailerName,leafletName"
+    }
 };
 
 const leafletsReducer = (state: InitialState = initialState, action: ApiDispatchTypes): InitialState => {

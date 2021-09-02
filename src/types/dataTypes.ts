@@ -1,50 +1,50 @@
 
 
 export interface LeafletsRequest {
-    offset?: Number;
-    limit?: Number;
-    name?: String;
-    retailerId?: String;
-    excludeExpired?: Boolean;
-    maxDistance?: Number;
-    sort?: String;
+    offset?: number;
+    limit?: number;
+    name?: string;
+    retailerId?: string;
+    excludeExpired?: boolean;
+    maxDistance?: number;
+    sort?: string;
 }
 
 interface QueryItem {
-    offset: Number;
-    limit: Number;
+    offset: number;
+    limit: number;
 }
 
 interface ImageItem {
-    xs: String;
-    sm: String;
-    md: String;
-    lg: String;
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
 }
 
 interface RetailerItem {
-    id: String;
-    name: String;
-    distance: Number;
-    priority: Number;
+    id: string;
+    name: string;
+    distance: number;
+    priority: number;
     images: ImageItem;
 }
 
 export interface LeafletItem {
-    id: String;
-    name: String;
-    expTimestamp: Number;
+    id: string;
+    name: string;
+    expTimestamp: number;
     retailer: RetailerItem;
 }
 
 export interface LeafletsResponse {
     data: {
         query: QueryItem;
-        current: Number;
-        total: Number;
-        count: Number;
+        current: number;
+        total: number;
+        count: number;
         leaflets: Array<LeafletItem>
-        error: String
+        error: string
     }
 }
 

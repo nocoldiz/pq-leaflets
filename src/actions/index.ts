@@ -22,6 +22,7 @@ export const fetchLeaflets = (req: LeafletsRequest) => (dispatch: Dispatch<ApiDi
     }
   }).then((result: AxiosResponse<LeafletsResponse>) => {
     const responseData = result.data;
+    console.log(responseData);
     if (responseData.data.error) {
       throw ("error");
     }

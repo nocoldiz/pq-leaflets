@@ -1,12 +1,17 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+//import { RootState } from "../../store";
 import NavDropdown from 'react-bootstrap/NavDropdown';
+//import { useDispatch, useSelector } from "react-redux";
 
 import Container from 'react-bootstrap/Container';
 
 import './FiltersNavbar.scss';
 const FiltersNavbar = () => {
+  // const dispatch = useDispatch();
+  // const filters = useSelector((state: RootState) => state.leafletsReducer.filters);
+
   return (
     <Navbar sticky="top" bg="light" expand="lg">
       <Container>
