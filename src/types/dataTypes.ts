@@ -1,6 +1,6 @@
 
 
-export interface ApiRequest {
+export interface LeafletsRequest {
     offset?: Number;
     limit?: Number;
     name?: String;
@@ -30,20 +30,22 @@ interface RetailerItem {
     images: ImageItem;
 }
 
-interface LeafletItem {
+export interface LeafletItem {
     id: String;
     name: String;
     expTimestamp: Number;
     retailer: RetailerItem;
 }
 
-export interface ApiResponse {
-    query: QueryItem;
-    current: Number;
-    total: Number;
-    count: Number;
-    leaflets: Array<LeafletItem>
-    error: String
+export interface LeafletsResponse {
+    data: {
+        query: QueryItem;
+        current: Number;
+        total: Number;
+        count: Number;
+        leaflets: Array<LeafletItem>
+        error: String
+    }
 }
 
 

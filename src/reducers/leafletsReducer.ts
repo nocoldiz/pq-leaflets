@@ -1,9 +1,10 @@
 import { ApiDispatchTypes, ActionType, InitialState } from "../types/actionTypes"
 const initialState: InitialState = {
     loading: false,
+    leaflets: []
 };
 
-const apiReducer = (state: InitialState = initialState, action: ApiDispatchTypes): InitialState => {
+const leafletsReducer = (state: InitialState = initialState, action: ApiDispatchTypes): InitialState => {
     switch (action.type) {
         case ActionType.FETCH_LEAFLETS_PENDING:
             return {
@@ -11,10 +12,14 @@ const apiReducer = (state: InitialState = initialState, action: ApiDispatchTypes
                 loading: true
             };
         case ActionType.FETCH_LEAFLETS_SUCCESS:
+            const retailers = "";
+            console.log(retailers);
             return {
                 ...state,
                 loading: false,
                 response: action.payload,
+                leaflets: action.payload.data.leaflets,
+
             };
         case ActionType.FETCH_LEAFLETS_ERROR:
             return {
@@ -27,4 +32,4 @@ const apiReducer = (state: InitialState = initialState, action: ApiDispatchTypes
     }
 }
 
-export default apiReducer
+export default leafletsReducer

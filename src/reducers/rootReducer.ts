@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import apiReducer from "./apiReducer";
+import leafletsReducer from "./leafletsReducer";
 
 const RootReducer = combineReducers({
-    api: apiReducer
+    leafletsReducer: leafletsReducer
 });
 
 export default RootReducer;

@@ -1,5 +1,5 @@
 
-import { ApiResponse } from "./dataTypes";
+import { LeafletsResponse, LeafletItem } from "./dataTypes";
 export enum ActionType {
     FETCH_LEAFLETS_PENDING = "fetch_leaflets_pending",
     FETCH_LEAFLETS_SUCCESS = "fetch_leaflets_success",
@@ -8,7 +8,8 @@ export enum ActionType {
 
 export interface InitialState {
     loading: boolean,
-    response?: ApiResponse,
+    leaflets: Array<LeafletItem>,
+    response?: LeafletsResponse,
     error?: string
 }
 interface FetchLeafletsPendingAction {
@@ -18,7 +19,7 @@ interface FetchLeafletsPendingAction {
 
 interface FetchLeafletsSuccessAction {
     type: ActionType.FETCH_LEAFLETS_SUCCESS,
-    payload: ApiResponse,
+    payload: LeafletsResponse,
     loading: boolean
 }
 
