@@ -3,7 +3,6 @@ const initialState: InitialState = {
     loading: false,
     leaflets: [],
     filteredLeaflets: [],
-    nameFilter: "",
     filters: {
         offset: 0,
         limit: 30,
@@ -31,8 +30,6 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
                 response: action.payload,
                 leaflets: action.payload.data.leaflets,
                 filteredLeaflets: action.payload.data.leaflets,
-
-
             };
         case ActionType.FETCH_LEAFLETS_ERROR:
             return {
@@ -45,8 +42,11 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
             return {
                 ...state,
                 filteredLeaflets: action.payload,
-                nameFilter: action.nameFilter,
-            };
+                filters: {
+                    ...state.filters,
+                    name: action.name,
+                }
+            }
 
         default:
             return state

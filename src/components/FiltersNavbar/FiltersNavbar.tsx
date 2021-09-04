@@ -27,7 +27,7 @@ const defaultValues = [0, 30];
 
 const FiltersNavbar = () => {
   const dispatch = useDispatch();
-  const nameFilter = useSelector((state: RootState) => state.leafletsReducer.nameFilter);
+  const nameFilter = useSelector((state: RootState) => state.leafletsReducer.filters.name);
   const leaflets = useSelector((state: RootState) => state.leafletsReducer.leaflets);
   console.log(nameFilter);
 

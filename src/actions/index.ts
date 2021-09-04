@@ -46,7 +46,7 @@ export const fetchLeaflets = (req: LeafletsRequest) => (dispatch: Dispatch<ApiDi
 export const filterLeafletsByName = (leaflets: Array<LeafletItem>, name: string) => (dispatch: Dispatch<ApiDispatchTypes>) => {
   dispatch({
     type: ActionType.FILTER_LEAFLETS_BY_NAME,
-    nameFilter: name,
+    name: name,
     payload:
       name === ""
         ? leaflets

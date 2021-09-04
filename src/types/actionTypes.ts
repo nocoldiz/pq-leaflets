@@ -13,7 +13,6 @@ export interface InitialState {
     filteredLeaflets: Array<LeafletItem>,
     response?: LeafletsResponse,
     error?: string,
-    nameFilter?: string,
     filters: LeafletsRequest
 }
 interface FetchLeafletsPendingAction {
@@ -35,7 +34,7 @@ interface FetchLeafletsErrorAction {
 
 interface FilterLeafletsByNameAction {
     type: ActionType.FILTER_LEAFLETS_BY_NAME,
-    nameFilter: string,
+    name: string,
     payload: Array<LeafletItem>
 }
 
