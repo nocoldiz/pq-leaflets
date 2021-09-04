@@ -4,14 +4,16 @@ import Nav from 'react-bootstrap/Nav';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
-
-//import { RootState } from '../../store';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-//import { useDispatch, useSelector } from 'react-redux';
+import Container from 'react-bootstrap/Container';
+
+import { RootState } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { filterLeafletsByName } from "../../actions";
+
 import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
 import { SliderRail, Handle, Track } from '../Slider/Slider';
 
-import Container from 'react-bootstrap/Container';
 
 import './FiltersNavbar.scss';
 const sliderStyle = {
@@ -24,8 +26,11 @@ const domain = [0, 100];
 const defaultValues = [0, 30];
 
 const FiltersNavbar = () => {
-  // const dispatch = useDispatch();
-  // const filters = useSelector((state: RootState) => state.leafletsReducer.filters);
+  const dispatch = useDispatch();
+  const nameFilter = useSelector((state: RootState) => state.leafletsReducer.nameFilter);
+  const leaflets = useSelector((state: RootState) => state.leafletsReducer.leaflets);
+  console.log(nameFilter);
+
   const [update, setUpdate] = useState<ReadonlyArray<number>>([0, 30]);
   const [values, setValues] = useState<ReadonlyArray<number>>([0, 30]);
 
@@ -52,6 +57,7 @@ const FiltersNavbar = () => {
                 <FormControl
                   placeholder='Search name or retailer'
                   aria-label='Search'
+                  onChange={(evt) => dispatch(filterLeafletsByName(leaflets, evt.target.value))}
                 />
               </InputGroup>
             </Nav.Item>

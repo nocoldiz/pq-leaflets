@@ -12,17 +12,7 @@ import FiltersNavbar from './components/FiltersNavbar';
 const App = () => {
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.leafletsReducer.filters);
-  const leaflets = useSelector((state: RootState) => state.leafletsReducer.leaflets);
-  /*
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setFilter({
-      offset: 0,
-      limit: 30,
-      name: "",
-      retailerId: "",
-      excludeExpired: false,
-      maxDistance: 0,
-      sort: "priority,expTimestamp,distance,retailerName,leafletName"
-    });*/
+  const leaflets = useSelector((state: RootState) => state.leafletsReducer.filteredLeaflets);
   useEffect(() => {
     dispatch(fetchLeaflets(filters))
   }, []);

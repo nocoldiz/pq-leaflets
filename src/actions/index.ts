@@ -1,7 +1,7 @@
 import { Dispatch } from "redux"
 import axios, { AxiosResponse } from 'axios';
 import { ActionType, ApiDispatchTypes } from "../types/actionTypes"
-import { LeafletsRequest, LeafletsResponse } from "../types/dataTypes"
+import { LeafletsRequest, LeafletsResponse, LeafletItem } from "../types/dataTypes"
 const baseUrl = "https://pq-leaflets.herokuapp.com"
 
 
@@ -39,4 +39,20 @@ export const fetchLeaflets = (req: LeafletsRequest) => (dispatch: Dispatch<ApiDi
       error: error
     });
   });
+};
+
+
+
+export const filterLeafletsByName = (leaflets: Array<LeafletItem>, name: string) => (dispatch: Dispatch<ApiDispatchTypes>) => {
+  dispatch({
+    type: ActionType.FILTER_LEAFLETS_BY_NAME,
+    nameFilter: name,
+    payload:
+      name === ""
+        ? leaflets
+        : leaflets.filter(
+          (x) => x.name.indexOf(name.toUpperCase()) >= 0
+        ),
+  })
+
 };
