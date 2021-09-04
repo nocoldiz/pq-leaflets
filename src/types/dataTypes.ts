@@ -3,10 +3,10 @@
 export interface LeafletsRequest {
     offset?: number;
     limit?: number;
-    name?: string;
+    name: string;
     retailerId?: string;
-    excludeExpired?: number;
-    maxDistance?: number;
+    excludeExpired: number;
+    maxDistance: number;
     sort?: string;
 }
 

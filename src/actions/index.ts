@@ -47,35 +47,28 @@ export const fetchLeaflets = (req: LeafletsRequest, refresh: boolean) => (dispat
 
 
 
-export const filterLeafletsByName = (leaflets: Array<LeafletItem>, name: string) => (dispatch: Dispatch<ApiDispatchTypes>) => {
+export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRequest) => (dispatch: Dispatch<ApiDispatchTypes>) => {
   // Nota: la richiesta API è case sensitive, per comodità rendo il filtro locale non case sensitive
-  dispatch({
-    type: ActionType.FILTER_LEAFLETS_BY_NAME,
-    name: name,
-    payload:
-      name === ""
-        ? leaflets
-        : leaflets.filter(
-          (x) => x.name.indexOf(name.toUpperCase()) >= 0
-        ),
-  })
-};
+  const nameFilter = filters.name.toLowerCase();
+  const maxDistanceFilter = filters.maxDistance;
 
-export const filterLeafletsByExpired = (leaflets: Array<LeafletItem>, excludeExpired: boolean) => (dispatch: Dispatch<ApiDispatchTypes>) => {
   const today = new Date();
-  let filteredLeaflets = leaflets;
-  if (excludeExpired) {
-    filteredLeaflets = leaflets.filter((items) => {
-      let d = new Date(0);
-      d.setUTCSeconds(items.expTimestamp);
-      return d.getTime() > today.getTime();
-    })
-  }
-  console.log(filteredLeaflets);
-
   dispatch({
-    type: ActionType.FILTER_LEAFLETS_BY_EXPIRED,
-    excludeExpired: excludeExpired,
-    payload: filteredLeaflets
+    type: ActionType.FILTER_LEAFLETS,
+    filters: filters,
+    payload: leaflets.filter(item => {
+      let d = new Date(0);
+      if (filters.excludeExpired) {
+        d.setUTCSeconds(item.expTimestamp);
+        console.log(today)
+        //||         d.getTime() > today.getTime()
+
+      }
+      return (
+        item.name.toLowerCase().indexOf(nameFilter) >= 0 ||
+        item.retailer.name.toLowerCase().indexOf(nameFilter) >= 0 ||
+        item.retailer.distance <= maxDistanceFilter
+      )
+    })
   })
 };

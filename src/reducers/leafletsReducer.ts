@@ -49,42 +49,11 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
                 loading: false,
                 error: action.error
             };
-
-        case ActionType.FILTER_LEAFLETS_BY_NAME:
+        case ActionType.FILTER_LEAFLETS:
             return {
                 ...state,
                 filteredLeaflets: action.payload,
-                filters: {
-                    ...state.filters,
-                    name: action.name,
-                }
-            }
-        case ActionType.FILTER_LEAFLETS_BY_EXPIRED:
-            return {
-                ...state,
-                filteredLeaflets: action.payload,
-                filters: {
-                    ...state.filters,
-                    excludeExpired: action.excludeExpired ? 1 : 0,
-                }
-            }
-        case ActionType.FILTER_LEAFLETS_BY_DISTANCE:
-            return {
-                ...state,
-                filteredLeaflets: action.payload,
-                filters: {
-                    ...state.filters,
-                    maxDistance: action.maxDistance,
-                }
-            }
-        case ActionType.FILTER_LEAFLETS_BY_OFFSET_AND_LIMIT:
-            return {
-                ...state,
-                filteredLeaflets: action.payload,
-                filters: {
-                    ...state.filters,
-                    offset: action.offset,
-                }
+                filters: action.filters
             }
         case ActionType.SORT_LEAFLETS:
             return {

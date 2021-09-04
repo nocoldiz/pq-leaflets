@@ -4,6 +4,7 @@ export enum ActionType {
     FETCH_LEAFLETS_PENDING = "fetch_leaflets_pending",
     FETCH_LEAFLETS_SUCCESS = "fetch_leaflets_success",
     FETCH_LEAFLETS_ERROR = "fetch_leaflets_error",
+    FILTER_LEAFLETS = "filter_Leaflets",
     FILTER_LEAFLETS_BY_NAME = "filter_leaflets_by_name",
     FILTER_LEAFLETS_BY_EXPIRED = "filter_leaflets_by_expired",
     FILTER_LEAFLETS_BY_RETAILER_ID = "filter_leaflets_by_retailer_id",
@@ -38,34 +39,9 @@ interface FetchLeafletsErrorAction {
     error: string,
     loading: boolean
 }
-
-interface FilterLeafletsByNameAction {
-    type: ActionType.FILTER_LEAFLETS_BY_NAME,
-    name: string,
-    payload: Array<LeafletItem>
-}
-interface FilterLeafletsByOffsetAndLimit {
-    type: ActionType.FILTER_LEAFLETS_BY_OFFSET_AND_LIMIT,
-    offset: number,
-    limit: number,
-    payload: Array<LeafletItem>
-}
-
-interface FilterLeafletsByExpired {
-    type: ActionType.FILTER_LEAFLETS_BY_EXPIRED,
-    excludeExpired: boolean,
-    payload: Array<LeafletItem>
-}
-
-interface FilterLeafletsByRetailerID {
-    type: ActionType.FILTER_LEAFLETS_BY_RETAILER_ID,
-    excludeExpired: boolean,
-    payload: Array<LeafletItem>
-}
-
-interface FilterLeafletsByDistance {
-    type: ActionType.FILTER_LEAFLETS_BY_DISTANCE,
-    maxDistance: number,
+interface FilterLeafletsAction {
+    type: ActionType.FILTER_LEAFLETS,
+    filters: LeafletsRequest,
     payload: Array<LeafletItem>
 }
 
@@ -76,4 +52,4 @@ interface SortLeaflets {
 }
 
 
-export type ApiDispatchTypes = FetchLeafletsPendingAction | FetchLeafletsSuccessAction | FetchLeafletsErrorAction | FilterLeafletsByNameAction | FilterLeafletsByExpired | FilterLeafletsByRetailerID | FilterLeafletsByDistance | FilterLeafletsByOffsetAndLimit | SortLeaflets;
+export type ApiDispatchTypes = FetchLeafletsPendingAction | FetchLeafletsSuccessAction | FetchLeafletsErrorAction | FilterLeafletsAction | SortLeaflets;

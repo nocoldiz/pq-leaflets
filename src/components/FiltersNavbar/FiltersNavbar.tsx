@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../store';
-import { fetchLeaflets, filterLeafletsByExpired, filterLeafletsByName } from "../../actions";
+import { fetchLeaflets, filterLeaflets } from "../../actions";
 
 import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
 import { SliderRail, Handle, Track } from '../Slider/Slider';
@@ -60,7 +60,7 @@ const FiltersNavbar = () => {
                 <FormControl
                   placeholder='Search name or retailer'
                   aria-label='Search'
-                  onChange={(evt) => dispatch(filterLeafletsByName(leaflets, evt.target.value))}
+                  onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, name: evt.target.value }))}
                 />
               </InputGroup>
             </Nav.Item>
@@ -133,7 +133,7 @@ const FiltersNavbar = () => {
                 <Form.Check
                   type='checkbox'
                   id='exclude-expired'
-                  onChange={(evt) => dispatch(filterLeafletsByExpired(leaflets, evt.target.checked))}
+                  onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, excludeExpired: evt.target.checked ? 0 : 1 }))}
                   label='Exclude expired'
                 />
               </Form>
@@ -141,7 +141,8 @@ const FiltersNavbar = () => {
             <Nav.Item>
               <InputGroup>
                 <FormControl
-                  type="number"
+                  type="text"
+                  onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, maxDistance: parseInt(evt.target.value) }))}
                   placeholder='Max distance'
                   value={0}
                 />
