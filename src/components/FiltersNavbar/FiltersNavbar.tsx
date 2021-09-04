@@ -1,16 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 //import { RootState } from "../../store";
 import NavDropdown from 'react-bootstrap/NavDropdown';
 //import { useDispatch, useSelector } from "react-redux";
+import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
+import { SliderRail, Handle, Track } from '../Slider/Slider';
 
 import Container from 'react-bootstrap/Container';
 
 import './FiltersNavbar.scss';
+const sliderStyle = {
+  position: 'relative' as 'relative',
+  width: '100%',
+  touchAction: 'none',
+};
+
+const domain = [0, 100];
+const defaultValues = [0, 30];
+
+
+
 const FiltersNavbar = () => {
   // const dispatch = useDispatch();
   // const filters = useSelector((state: RootState) => state.leafletsReducer.filters);
+  const [update, setUpdate] = useState<ReadonlyArray<number>>([0, 30]);
+  const [values, setValues] = useState<ReadonlyArray<number>>([0, 30]);
+
+  const onUpdate = (update: ReadonlyArray<number>) => {
+    setUpdate(update);
+  };
+  console.log(defaultValues);
+  console.log(update);
+
+  const onChange = (values: ReadonlyArray<number>) => {
+    setValues(values);
+  };
+  console.log(values);
 
   return (
     <Navbar sticky="top" bg="light" expand="lg">
@@ -21,6 +47,54 @@ const FiltersNavbar = () => {
           <Nav className="me-auto">
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#link">Link</Nav.Link>
+            <NavDropdown title="Set offset and limit" id="basic-nav-dropdown">
+              <NavDropdown.Item>
+                <Slider
+                  mode={2}
+                  step={1}
+                  domain={domain}
+                  rootStyle={sliderStyle}
+                  onUpdate={onUpdate}
+                  onChange={onChange}
+                  values={values}
+                >
+                  <Rail>
+                    {({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}
+                  </Rail>
+                  <Handles>
+                    {({ handles, getHandleProps }) => (
+                      <div className="slider-handles">
+                        {handles.map((handle) => (
+                          <Handle
+                            key={handle.id}
+                            handle={handle}
+                            domain={domain}
+                            getHandleProps={getHandleProps}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </Handles>
+                  <Tracks right={false}>
+                    {({ tracks, getTrackProps }) => (
+                      <div className="slider-tracks">
+                        {tracks.map(({ id, source, target }) => (
+                          <Track
+                            key={id}
+                            source={source}
+                            target={target}
+                            getTrackProps={getTrackProps}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </Tracks>
+                </Slider></NavDropdown.Item>
+              <NavDropdown.Divider />
+
+              <NavDropdown.Item>Offset: {values[0]}</NavDropdown.Item>
+              <NavDropdown.Item>Limit: {values[1]}</NavDropdown.Item>
+            </NavDropdown>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
