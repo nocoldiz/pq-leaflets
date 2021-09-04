@@ -25,7 +25,6 @@ export const fetchLeaflets = (req: LeafletsRequest, refresh: boolean) => (dispat
     }
   }).then((result: AxiosResponse<LeafletsResponse>) => {
     const responseData = result.data;
-    console.log(responseData);
     if (responseData.data.error) {
       throw ("error");
     }
@@ -53,22 +52,27 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
   const maxDistanceFilter = filters.maxDistance;
 
   const today = new Date();
+  const filteredLeaflets = leaflets.filter(item => {
+    let d = new Date(0);
+    if (filters.excludeExpired) {
+      d.setUTCSeconds(item.expTimestamp);
+      console.log(today)
+      //||         d.getTime() > today.getTime()
+
+    }
+    return (
+      item.name.toLowerCase().indexOf(nameFilter) >= 0 ||
+      item.retailer.name.toLowerCase().indexOf(nameFilter) >= 0 ||
+      item.retailer.distance <= maxDistanceFilter
+    )
+  }).slice(filters.offset, filters.limit);
+  console.log(filteredLeaflets);
+  console.log(filters);
+
+
   dispatch({
     type: ActionType.FILTER_LEAFLETS,
     filters: filters,
-    payload: leaflets.filter(item => {
-      let d = new Date(0);
-      if (filters.excludeExpired) {
-        d.setUTCSeconds(item.expTimestamp);
-        console.log(today)
-        //||         d.getTime() > today.getTime()
-
-      }
-      return (
-        item.name.toLowerCase().indexOf(nameFilter) >= 0 ||
-        item.retailer.name.toLowerCase().indexOf(nameFilter) >= 0 ||
-        item.retailer.distance <= maxDistanceFilter
-      )
-    })
+    payload: filteredLeaflets
   })
 };

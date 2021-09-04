@@ -34,7 +34,7 @@ const FiltersNavbar = () => {
   const leaflets = useSelector((state: RootState) => state.leafletsReducer.leaflets);
   // Initialize double slider
 
-  const domain = [0, 100];
+  const domain = [0, 70];
   const [update, setUpdate] = useState<ReadonlyArray<number>>([0, 30]);
   const [values, setValues] = useState<ReadonlyArray<number>>([0, 30]);
 
@@ -45,6 +45,7 @@ const FiltersNavbar = () => {
 
   const onChange = (values: ReadonlyArray<number>) => {
     setValues(values);
+    dispatch(filterLeaflets(leaflets, { ...filters, offset: values[0], limit: values[1] }));
   };
   console.log(values);
 
