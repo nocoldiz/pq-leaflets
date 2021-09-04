@@ -6,10 +6,12 @@ import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../store';
-import { useDispatch, useSelector } from 'react-redux';
-import { filterLeafletsByName } from "../../actions";
+import { fetchLeaflets, filterLeafletsByExpired, filterLeafletsByName } from "../../actions";
 
 import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
 import { SliderRail, Handle, Track } from '../Slider/Slider';
@@ -22,22 +24,23 @@ const sliderStyle = {
   touchAction: 'none',
 };
 
-const domain = [0, 100];
-const defaultValues = [0, 30];
 
 const FiltersNavbar = () => {
-  const dispatch = useDispatch();
-  const nameFilter = useSelector((state: RootState) => state.leafletsReducer.filters.name);
-  const leaflets = useSelector((state: RootState) => state.leafletsReducer.leaflets);
-  console.log(nameFilter);
 
+
+  const dispatch = useDispatch();
+  const filters = useSelector((state: RootState) => state.leafletsReducer.filters);
+
+  const leaflets = useSelector((state: RootState) => state.leafletsReducer.leaflets);
+  // Initialize double slider
+
+  const domain = [0, 100];
   const [update, setUpdate] = useState<ReadonlyArray<number>>([0, 30]);
   const [values, setValues] = useState<ReadonlyArray<number>>([0, 30]);
 
   const onUpdate = (update: ReadonlyArray<number>) => {
     setUpdate(update);
   };
-  console.log(defaultValues);
   console.log(update);
 
   const onChange = (values: ReadonlyArray<number>) => {
@@ -130,6 +133,7 @@ const FiltersNavbar = () => {
                 <Form.Check
                   type='checkbox'
                   id='exclude-expired'
+                  onChange={(evt) => dispatch(filterLeafletsByExpired(leaflets, evt.target.checked))}
                   label='Exclude expired'
                 />
               </Form>
@@ -148,10 +152,14 @@ const FiltersNavbar = () => {
                 priority
               </NavDropdown.Item>
             </NavDropdown>
+            <Nav.Item>
+              <Button variant="primary" onClick={() => dispatch(fetchLeaflets(filters, true))}>Fetch from API</Button>{' '}
+
+            </Nav.Item>
           </Nav>
         </Navbar.Collapse>
-      </Container>
-    </Navbar>
+      </Container >
+    </Navbar >
   );
 }
 

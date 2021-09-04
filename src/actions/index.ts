@@ -5,11 +5,13 @@ import { LeafletsRequest, LeafletsResponse, LeafletItem } from "../types/dataTyp
 const baseUrl = "https://pq-leaflets.herokuapp.com"
 
 
-export const fetchLeaflets = (req: LeafletsRequest) => (dispatch: Dispatch<ApiDispatchTypes>) => {
+export const fetchLeaflets = (req: LeafletsRequest, refresh: boolean) => (dispatch: Dispatch<ApiDispatchTypes>) => {
   dispatch({
     type: ActionType.FETCH_LEAFLETS_PENDING,
     loading: true
   });
+
+  console.log(req);
 
   axios.get(`${baseUrl}/api/leaflets/filter`, {
     params: {
@@ -29,6 +31,7 @@ export const fetchLeaflets = (req: LeafletsRequest) => (dispatch: Dispatch<ApiDi
     dispatch({
       type: ActionType.FETCH_LEAFLETS_SUCCESS,
       loading: false,
+      refresh: refresh,
       payload: responseData
     });
   }).catch((error) => {
@@ -44,6 +47,7 @@ export const fetchLeaflets = (req: LeafletsRequest) => (dispatch: Dispatch<ApiDi
 
 
 export const filterLeafletsByName = (leaflets: Array<LeafletItem>, name: string) => (dispatch: Dispatch<ApiDispatchTypes>) => {
+  // Nota: la richiesta API è case sensitive, per comodità rendo il filtro locale non case sensitive
   dispatch({
     type: ActionType.FILTER_LEAFLETS_BY_NAME,
     name: name,
@@ -54,5 +58,23 @@ export const filterLeafletsByName = (leaflets: Array<LeafletItem>, name: string)
           (x) => x.name.indexOf(name.toUpperCase()) >= 0
         ),
   })
+};
 
+export const filterLeafletsByExpired = (leaflets: Array<LeafletItem>, excludeExpired: boolean) => (dispatch: Dispatch<ApiDispatchTypes>) => {
+  const today = new Date();
+  let filteredLeaflets = leaflets;
+  if (excludeExpired) {
+    filteredLeaflets = leaflets.filter((items) => {
+      let d = new Date(0);
+      d.setUTCSeconds(items.expTimestamp);
+      return d.getTime() > today.getTime();
+    })
+  }
+  console.log(filteredLeaflets);
+
+  dispatch({
+    type: ActionType.FILTER_LEAFLETS_BY_EXPIRED,
+    excludeExpired: excludeExpired,
+    payload: filteredLeaflets
+  })
 };

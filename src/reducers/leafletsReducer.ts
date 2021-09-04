@@ -24,13 +24,25 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
         case ActionType.FETCH_LEAFLETS_SUCCESS:
             const retailers = "";
             console.log(retailers);
-            return {
-                ...state,
-                loading: false,
-                response: action.payload,
-                leaflets: action.payload.data.leaflets,
-                filteredLeaflets: action.payload.data.leaflets,
-            };
+
+            if (action.refresh) {
+                console.log("refreshing from API");
+                return {
+                    ...state,
+                    loading: false,
+                    response: action.payload,
+                    filteredLeaflets: action.payload.data.leaflets,
+                };
+            } else {
+                return {
+                    ...state,
+                    loading: false,
+                    response: action.payload,
+                    leaflets: action.payload.data.leaflets,
+                    filteredLeaflets: action.payload.data.leaflets,
+                };
+            }
+
         case ActionType.FETCH_LEAFLETS_ERROR:
             return {
                 ...state,
@@ -45,6 +57,15 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
                 filters: {
                     ...state.filters,
                     name: action.name,
+                }
+            }
+        case ActionType.FILTER_LEAFLETS_BY_EXPIRED:
+            return {
+                ...state,
+                filteredLeaflets: action.payload,
+                filters: {
+                    ...state.filters,
+                    excludeExpired: action.excludeExpired,
                 }
             }
         case ActionType.FILTER_LEAFLETS_BY_DISTANCE:

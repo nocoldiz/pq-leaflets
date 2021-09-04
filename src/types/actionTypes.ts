@@ -29,7 +29,8 @@ interface FetchLeafletsPendingAction {
 interface FetchLeafletsSuccessAction {
     type: ActionType.FETCH_LEAFLETS_SUCCESS,
     payload: LeafletsResponse,
-    loading: boolean
+    loading: boolean,
+    refresh: boolean,
 }
 
 interface FetchLeafletsErrorAction {
