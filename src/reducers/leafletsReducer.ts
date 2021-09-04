@@ -47,7 +47,33 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
                     name: action.name,
                 }
             }
-
+        case ActionType.FILTER_LEAFLETS_BY_DISTANCE:
+            return {
+                ...state,
+                filteredLeaflets: action.payload,
+                filters: {
+                    ...state.filters,
+                    maxDistance: action.maxDistance,
+                }
+            }
+        case ActionType.FILTER_LEAFLETS_BY_OFFSET_AND_LIMIT:
+            return {
+                ...state,
+                filteredLeaflets: action.payload,
+                filters: {
+                    ...state.filters,
+                    offset: action.offset,
+                }
+            }
+        case ActionType.SORT_LEAFLETS:
+            return {
+                ...state,
+                filteredLeaflets: action.payload,
+                filters: {
+                    ...state.filters,
+                    sort: action.sort,
+                }
+            }
         default:
             return state
     }
