@@ -18,6 +18,7 @@ export const fetchLeaflets = (req: LeafletsRequest, refresh: boolean) => (dispat
       offset: req.offset,
       limit: req.limit,
       name: req.name,
+      excludeExpired: req.excludeExpired,
       retailerId: req.retailerId,
       maxDistance: req.maxDistance,
       sort: req.sort

@@ -8,7 +8,7 @@ const initialState: InitialState = {
         limit: 30,
         name: "",
         retailerId: "",
-        excludeExpired: false,
+        excludeExpired: 0,
         maxDistance: 0,
         sort: "priority,expTimestamp,distance,retailerName,leafletName"
     }
@@ -65,7 +65,7 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
                 filteredLeaflets: action.payload,
                 filters: {
                     ...state.filters,
-                    excludeExpired: action.excludeExpired,
+                    excludeExpired: action.excludeExpired ? 1 : 0,
                 }
             }
         case ActionType.FILTER_LEAFLETS_BY_DISTANCE:
