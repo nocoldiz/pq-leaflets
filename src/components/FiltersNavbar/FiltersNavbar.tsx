@@ -18,6 +18,7 @@ import { SliderRail, Handle, Track } from '../Slider/Slider';
 
 
 import './FiltersNavbar.scss';
+import { Retailer } from '@src/types/dataTypes';
 const sliderStyle = {
   position: 'relative' as 'relative',
   width: '100%',
@@ -32,6 +33,8 @@ const FiltersNavbar = () => {
   const filters = useSelector((state: RootState) => state.leafletsReducer.filters);
 
   const leaflets = useSelector((state: RootState) => state.leafletsReducer.leaflets);
+  const retailers = useSelector((state: RootState) => state.leafletsReducer.retailers);
+
   // Initialize double slider
 
   const domain = [0, 70];
@@ -48,7 +51,18 @@ const FiltersNavbar = () => {
     dispatch(filterLeaflets(leaflets, { ...filters, offset: values[0], limit: values[1] }));
   };
   console.log(values);
+  const listRetailers = retailers.map((item: Retailer) =>
+    <div key={`default-${item.id}`} className='mb-3 mt-3'>
+      <Form.Check
+        type='radio'
+        id={`${item.id}`}
+        label={`${item.name}`}
+        onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, retailerId: evt.target.id }))}
 
+      />
+    </div>
+  );
+  console.log(listRetailers);
   return (
     <Navbar sticky='top' bg='light' expand='lg'>
       <Container>
@@ -116,16 +130,8 @@ const FiltersNavbar = () => {
             </NavDropdown>
             <NavDropdown title='Filter by retailer' id='basic-nav-dropdown'>
               <NavDropdown.Item >
-                <Form>
-                  {['De Masi SPA', 'Milan Salierno'].map((type: any) => (
-                    <div key={`default-${type}`} className='mb-3 mt-3'>
-                      <Form.Check
-                        type='radio'
-                        id={`${type}`}
-                        label={`${type}`}
-                      />
-                    </div>
-                  ))}
+                <Form >
+                  {listRetailers}
                 </Form>
               </NavDropdown.Item>
             </NavDropdown>

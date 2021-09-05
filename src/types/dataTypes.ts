@@ -15,6 +15,12 @@ interface QueryItem {
     limit: number;
 }
 
+export interface Retailer {
+    id: string;
+    name: string;
+}
+
+
 interface ImageItem {
     xs: string;
     sm: string;

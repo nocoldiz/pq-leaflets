@@ -2,6 +2,7 @@ import { ApiDispatchTypes, ActionType, InitialState } from "../types/actionTypes
 const initialState: InitialState = {
     loading: false,
     leaflets: [],
+    retailers: [],
     filteredLeaflets: [],
     filters: {
         offset: 0,
@@ -22,9 +23,6 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
                 loading: true
             };
         case ActionType.FETCH_LEAFLETS_SUCCESS:
-            const retailers = "";
-            console.log(retailers);
-
             if (action.refresh) {
                 console.log("refreshing from API");
                 return {
@@ -38,6 +36,7 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
                     ...state,
                     loading: false,
                     response: action.payload,
+                    retailers: action.retailers,
                     leaflets: action.payload.data.leaflets,
                     filteredLeaflets: action.payload.data.leaflets,
                 };
