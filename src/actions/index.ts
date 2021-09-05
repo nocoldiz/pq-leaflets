@@ -97,18 +97,72 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
 
 
 export const sortLeaflets = (leaflets: Array<LeafletItem>, sortBy: string, filters: LeafletsRequest) => (dispatch: Dispatch<ApiDispatchTypes>) => {
-  console.log(sortBy);
+  console.log("sorty by " + sortBy);
   let activeSort = filters.sort.split(',');
-  if (sortBy == "priority") {
-    activeSort[0] = "priority";
-    leaflets.sort((a, b) => (a.retailer.priority < b.retailer.priority ? -1 : 1));
-  } else if (sortBy == "-priority") {
-    {
+
+  switch (sortBy) {
+    case "priority":
+      activeSort[0] = "priority";
+      break;
+    case "-priority":
       activeSort[0] = "-priority";
-      leaflets.sort((a, b) => (a.retailer.priority > b.retailer.priority ? -1 : 1));
+      break;
+    case "expTimestamp":
+      activeSort[1] = "expTimestamp";
+      break;
+    case "-expTimestamp":
+      activeSort[1] = "-expTimestamp";
+      break;
+    case "distance":
+      activeSort[2] = "distance";
+      break;
+    case "-distance":
+      activeSort[2] = "-distance";
+      break;
+    case "retailerName":
+      activeSort[3] = "retailerName";
+      break;
+    case "-retailerName":
+      activeSort[3] = "-retailerName";
+      break;
+    case "leafletName":
+      activeSort[4] = "leafletName";
+      break;
+    case "-leafletName":
+      activeSort[4] = "-leafletName";
+      break;
+  }
 
-    }
-
+  console.log(activeSort);
+  if (activeSort[0] === "priority") {
+    leaflets.sort((a, b) => (a.retailer.priority < b.retailer.priority ? -1 : 1));
+  }
+  if (activeSort[0] === "-priority") {
+    leaflets.sort((a, b) => (a.retailer.priority > b.retailer.priority ? -1 : 1));
+  }
+  if (activeSort[1] === "expTimestamp") {
+    leaflets.sort((a, b) => (a.expTimestamp < b.expTimestamp ? -1 : 1));
+  }
+  if (activeSort[1] === "-expTimestamp") {
+    leaflets.sort((a, b) => (a.expTimestamp > b.expTimestamp ? -1 : 1));
+  }
+  if (activeSort[2] === "distance") {
+    leaflets.sort((a, b) => (a.retailer.distance < b.retailer.distance ? -1 : 1));
+  }
+  if (activeSort[2] === "-distance") {
+    leaflets.sort((a, b) => (a.retailer.distance > b.retailer.distance ? -1 : 1));
+  }
+  if (activeSort[3] === "retailerName") {
+    leaflets.sort((a, b) => (a.retailer.name < b.retailer.name ? -1 : 1));
+  }
+  if (activeSort[3] === "-retailerName") {
+    leaflets.sort((a, b) => (a.retailer.name > b.retailer.name ? -1 : 1));
+  }
+  if (activeSort[4] === "leafletName") {
+    leaflets.sort((a, b) => (a.name < b.name ? -1 : 1));
+  }
+  if (activeSort[4] === "-leafletName") {
+    leaflets.sort((a, b) => (a.name > b.name ? -1 : 1));
   }
   //desc arrayOfObjects.sort((a, b) => (a.propertyToSortBy > b.propertyToSortBy ? -1 : 1));
 
