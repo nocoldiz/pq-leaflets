@@ -97,8 +97,19 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
 
 
 export const sortLeaflets = (leaflets: Array<LeafletItem>, sortBy: string, filters: LeafletsRequest) => (dispatch: Dispatch<ApiDispatchTypes>) => {
+  console.log(sortBy);
+  let activeSort = filters.sort.split(',');
+  if (sortBy == "priority") {
+    activeSort[0] = "priority";
+    leaflets.sort((a, b) => (a.retailer.priority < b.retailer.priority ? -1 : 1));
+  } else if (sortBy == "-priority") {
+    {
+      activeSort[0] = "-priority";
+      leaflets.sort((a, b) => (a.retailer.priority > b.retailer.priority ? -1 : 1));
 
-  leaflets.sort((a, b) => (a.retailer.priority < b.retailer.priority ? -1 : 1));
+    }
+
+  }
   //desc arrayOfObjects.sort((a, b) => (a.propertyToSortBy > b.propertyToSortBy ? -1 : 1));
 
   console.log(leaflets);
@@ -106,7 +117,9 @@ export const sortLeaflets = (leaflets: Array<LeafletItem>, sortBy: string, filte
 
   dispatch({
     type: ActionType.SORT_LEAFLETS,
-    filters: filters,
+    filters: {
+      ...filters, sort: activeSort.join(",")
+    },
     payload: leaflets
   })
 };

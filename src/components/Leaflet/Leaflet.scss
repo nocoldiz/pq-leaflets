@@ -1,5 +1,16 @@
+@keyframes fadeinout {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 .layout {
   margin: 0.3rem;
+  animation: fadeinout 0.2s linear 1 forwards;
 }
 
 .list-title {

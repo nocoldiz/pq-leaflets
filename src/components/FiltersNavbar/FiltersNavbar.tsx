@@ -37,6 +37,11 @@ const FiltersNavbar = () => {
       return (item.id == id)
     })[0].name;
   };
+  const checkOrder = (name: string) => {
+    return filters.sort.indexOf("-" + name)
+  };
+
+  filters.sort.indexOf("-priority") !== -1
   const listRetailers = retailers.map((item: Retailer) =>
     <NavDropdown.Item
       key={item.id}
@@ -123,23 +128,23 @@ const FiltersNavbar = () => {
               </InputGroup>
             </Nav.Item>
             <NavDropdown title='Sort by' id='basic-nav-dropdown'>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "priority", filters))} >
-                <span className="mr-3">{filters.sort.indexOf("-priority") !== -1 ? "▼" : "▲"}</span>
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("priority") !== -1 ? "priority" : "-priority", filters))} >
+                <span className="mr-3">{checkOrder("priority") !== -1 ? "▼" : "▲"}</span>
                 Priority
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "priority", filters))} >
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "expTimestamp", filters))} >
                 <span className="pr-3">{filters.sort.indexOf("-expTimestamp") !== -1 ? "▼" : "▲"}</span>
                 ExpTimestamp
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "priority", filters))} >
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "distance", filters))} >
                 <span className="pr-3">{filters.sort.indexOf("-distance") !== -1 ? "▼" : "▲"}</span>
                 Distance
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "priority", filters))} >
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "retailerName", filters))} >
                 <span className="pr-3">{filters.sort.indexOf("-retailerName") !== -1 ? "▼" : "▲"}</span>
                 Retailer name
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "priority", filters))} >
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "leafletName", filters))} >
                 <span className="pr-3">{filters.sort.indexOf("-leafletName") !== -1 ? "▼" : "▲"}</span>
                 Leaflet name
               </NavDropdown.Item>
