@@ -7,7 +7,7 @@ export interface LeafletsRequest {
     retailerId: string;
     excludeExpired: number;
     maxDistance: number;
-    sort?: string;
+    sort: string;
 }
 
 interface QueryItem {

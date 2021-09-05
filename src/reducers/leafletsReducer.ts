@@ -58,10 +58,8 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
             return {
                 ...state,
                 filteredLeaflets: action.payload,
-                filters: {
-                    ...state.filters,
-                    sort: action.sort,
-                }
+                filters: action.filters
+
             }
         default:
             return state

@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../store';
-import { fetchLeaflets, filterLeaflets } from "../../actions";
+import { fetchLeaflets, filterLeaflets, sortLeaflets } from "../../actions";
 
 
 
@@ -123,8 +123,25 @@ const FiltersNavbar = () => {
               </InputGroup>
             </Nav.Item>
             <NavDropdown title='Sort by' id='basic-nav-dropdown'>
-              <NavDropdown.Item >
-                priority
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "priority", filters))} >
+                <span className="mr-3">{filters.sort.indexOf("-priority") !== -1 ? "▼" : "▲"}</span>
+                Priority
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "priority", filters))} >
+                <span className="pr-3">{filters.sort.indexOf("-expTimestamp") !== -1 ? "▼" : "▲"}</span>
+                ExpTimestamp
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "priority", filters))} >
+                <span className="pr-3">{filters.sort.indexOf("-distance") !== -1 ? "▼" : "▲"}</span>
+                Distance
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "priority", filters))} >
+                <span className="pr-3">{filters.sort.indexOf("-retailerName") !== -1 ? "▼" : "▲"}</span>
+                Retailer name
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, "priority", filters))} >
+                <span className="pr-3">{filters.sort.indexOf("-leafletName") !== -1 ? "▼" : "▲"}</span>
+                Leaflet name
               </NavDropdown.Item>
             </NavDropdown>
             <Nav.Item>

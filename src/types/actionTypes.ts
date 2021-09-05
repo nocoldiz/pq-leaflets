@@ -49,7 +49,7 @@ interface FilterLeafletsAction {
 
 interface SortLeaflets {
     type: ActionType.SORT_LEAFLETS,
-    sort: string,
+    filters: LeafletsRequest,
     payload: Array<LeafletItem>
 }
 

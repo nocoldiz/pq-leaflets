@@ -32,6 +32,10 @@ const Leaflet = (props: LeafletItem) => {
                     <span className="list-title">Expiration:</span>
                     {convertTimestamp(props.expTimestamp)}
                 </ListGroup.Item>
+                <ListGroup.Item>
+                    <span className="list-title">Priority:</span>
+                    {props.retailer.priority}
+                </ListGroup.Item>
             </ListGroup>
         </Card>
     );
