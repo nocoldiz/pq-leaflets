@@ -11,7 +11,7 @@ const initialState: InitialState = {
         retailerId: "",
         excludeExpired: 0,
         maxDistance: 0,
-        sort: "priority,expTimestamp,distance,retailerName,leafletName"
+        sort: "priority"
     }
 };
 
@@ -25,6 +25,7 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
         case ActionType.FETCH_LEAFLETS_SUCCESS:
             if (action.refresh) {
                 console.log("refreshing from API");
+                console.log(action.payload)
                 return {
                     ...state,
                     loading: false,
@@ -59,7 +60,6 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
                 ...state,
                 filteredLeaflets: action.payload,
                 filters: action.filters
-
             }
         default:
             return state

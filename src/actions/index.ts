@@ -99,59 +99,58 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
 
 
 export const sortLeaflets = (leaflets: Array<LeafletItem>, sortBy: string, filters: LeafletsRequest) => (dispatch: Dispatch<ApiDispatchTypes>) => {
-  let activeSort = filters.sort.split(',');
+  let activeSort: string = filters.sort;
   switch (sortBy) {
     case "priority":
-      activeSort[0] = "priority";
+      activeSort = "priority";
       leaflets.sort((a, b) => (a.retailer.priority - b.retailer.priority));
       break;
     case "-priority":
-      activeSort[0] = "-priority";
+      activeSort = "-priority";
       leaflets.sort((a, b) => (b.retailer.priority - a.retailer.priority));
       break;
     case "expTimestamp":
-      activeSort[1] = "expTimestamp";
+      activeSort = "expTimestamp";
       leaflets.sort((a, b) => (a.expTimestamp - b.expTimestamp));
       break;
     case "-expTimestamp":
-      activeSort[1] = "-expTimestamp";
+      activeSort = "-expTimestamp";
       leaflets.sort((a, b) => (b.expTimestamp - a.expTimestamp));
       break;
     case "distance":
-      activeSort[2] = "distance";
+      activeSort = "distance";
       leaflets.sort((a, b) => (a.retailer.distance - b.retailer.distance));
       break;
     case "-distance":
-      activeSort[2] = "-distance";
+      activeSort = "-distance";
       leaflets.sort((a, b) => (b.retailer.distance - a.retailer.distance));
       break;
     case "retailerName":
-      activeSort[3] = "retailerName";
+      activeSort = "retailerName";
       leaflets.sort((a, b) => (a.retailer.name < b.retailer.name ? -1 : 1));
       break;
     case "-retailerName":
-      activeSort[3] = "-retailerName";
+      activeSort = "-retailerName";
       leaflets.sort((a, b) => (a.retailer.name > b.retailer.name ? -1 : 1));
       break;
     case "leafletName":
-      activeSort[4] = "leafletName";
+      activeSort = "leafletName";
       leaflets.sort((a, b) => (a.name < b.name ? -1 : 1));
       break;
     case "-leafletName":
-      activeSort[4] = "-leafletName";
+      activeSort = "-leafletName";
       leaflets.sort((a, b) => (a.name > b.name ? -1 : 1));
       break;
     default:
       break;
   }
   console.log(activeSort);
-  console.log(activeSort.join(","));
 
 
   dispatch({
     type: ActionType.SORT_LEAFLETS,
     filters: {
-      ...filters, sort: activeSort.join(",")
+      ...filters, sort: activeSort
     },
     payload: leaflets
   })
