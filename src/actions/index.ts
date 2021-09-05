@@ -64,17 +64,15 @@ export const fetchLeaflets = (req: LeafletsRequest, refresh: boolean) => (dispat
 export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRequest) => (dispatch: Dispatch<ApiDispatchTypes>) => {
   // Nota: la richiesta API è case sensitive, per comodità rendo il filtro locale non case sensitive
   const nameFilter = filters.name.toUpperCase();
-  const maxDistanceFilter = filters.maxDistance;
   const retailerIdFilter = filters.retailerId;
+  const maxDistanceFilter = filters.maxDistance | 0;
 
   let filteredLeaflets = leaflets.filter(item => {
-
-    return (
-      nameFilter != "" ? item.name.toUpperCase().indexOf(nameFilter) >= 0 : true &&
-        nameFilter != "" ? item.retailer.name.toUpperCase().indexOf(nameFilter) >= 0 : true &&
-          maxDistanceFilter != 0 ? item.retailer.distance <= maxDistanceFilter : true &&
-            retailerIdFilter != "" ? item.retailer.id == retailerIdFilter : true
-    )
+    return ((item.name.toUpperCase().indexOf(nameFilter) >= 0) || (item.retailer.name.toUpperCase().indexOf(nameFilter) >= 0))
+  }).filter(item3 => {
+    return (retailerIdFilter != "" ? item3.retailer.id === retailerIdFilter : true)
+  }).filter(item4 => {
+    return (maxDistanceFilter != 0 ? item4.retailer.distance <= maxDistanceFilter : true)
   }).slice(filters.offset, filters.limit);
 
   if (filters.excludeExpired == 1) {
@@ -100,36 +98,26 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
 
 export const sortLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRequest) => (dispatch: Dispatch<ApiDispatchTypes>) => {
   // Nota: la richiesta API è case sensitive, per comodità rendo il filtro locale non case sensitive
-  const nameFilter = filters.name.toUpperCase();
-  const maxDistanceFilter = filters.maxDistance;
-  const retailerIdFilter = filters.retailerId;
+  //const nameFilter = filters.name.toUpperCase();
+  //const maxDistanceFilter = filters.maxDistance;
 
-  let filteredLeaflets = leaflets.filter(item => {
-
-    return (
-      nameFilter != "" ? item.name.toUpperCase().indexOf(nameFilter) >= 0 : true &&
-        nameFilter != "" ? item.retailer.name.toUpperCase().indexOf(nameFilter) >= 0 : true &&
-          maxDistanceFilter != 0 ? item.retailer.distance <= maxDistanceFilter : true &&
-            retailerIdFilter != "" ? item.retailer.id == retailerIdFilter : true
-    )
-  }).slice(filters.offset, filters.limit);
-
-  if (filters.excludeExpired == 1) {
-    const today = new Date();
-    console.log("filtering expired")
-    filteredLeaflets = filteredLeaflets.filter(item => {
-      let d = new Date(0);
-      d.setUTCSeconds(item.expTimestamp);
-      return d.getTime() > today.getTime()
-    })
-  }
-  console.log(filteredLeaflets);
-  console.log(filters);
+  //const retailerIdFilter = filters.retailerId;
+  /*
+    let filteredLeaflets = leaflets.filter(item => {
+  
+      return (
+        nameFilter != "" ? item.name.toUpperCase().indexOf(nameFilter) >= 0 : true &&
+          nameFilter != "" ? item.retailer.name.toUpperCase().indexOf(nameFilter) >= 0 : true &&
+            maxDistanceFilter != 0 ? item.retailer.distance <= maxDistanceFilter : true &&
+              retailerIdFilter != "" ? item.retailer.id !== retailerIdFilter : true
+      )
+    }).slice(filters.offset, filters.limit);
+    */
 
 
   dispatch({
     type: ActionType.FILTER_LEAFLETS,
     filters: filters,
-    payload: filteredLeaflets
+    payload: leaflets
   })
 };
