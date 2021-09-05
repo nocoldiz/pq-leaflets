@@ -63,16 +63,43 @@ const FiltersNavbar = () => {
               </InputGroup>
             </Nav.Item>
             <NavDropdown title='Set offset and limit' id='basic-nav-dropdown'>
-              <NavDropdown.Item>Offset: {filters.offset}</NavDropdown.Item>
-              <NavDropdown.Item>Limit: {filters.limit}</NavDropdown.Item>
-              <NavDropdown.Divider />
+
+              <NavDropdown.Item disabled>
+                <Form>
+                  <Form.Group>
+                    <Form.Label>Offset:</Form.Label>
+                    <Form.Control
+                      className="mobileBox"
+                      required
+                      name="offset"
+                      type="number"
+                      value={filters.offset}
+                      onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, offset: parseInt(evt.target.value) }))}
+                    />
+                  </Form.Group>
+                </Form></NavDropdown.Item>
+              <NavDropdown.Item disabled>
+                <Form>
+                  <Form.Group>
+                    <Form.Label>Limit:</Form.Label>
+                    <Form.Control
+                      className="mobileBox"
+                      required
+                      name="limit"
+                      type="number"
+                      value={filters.limit}
+                      onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, limit: parseInt(evt.target.value) }))}
+                    />
+                  </Form.Group>
+                </Form></NavDropdown.Item>              <NavDropdown.Divider />
 
               <NavDropdown.Item>
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title={filters.retailerId != "" ? getRetailerNameFromId(filters.retailerId) : 'Filter by retailer'} id='basic-nav-dropdown'>
-              <NavDropdown.Item onClick={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, retailerId: "" }))}
-              >None</NavDropdown.Item>
+              <NavDropdown.Item onClick={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, retailerId: "" }))}>
+                None
+              </NavDropdown.Item>
               {listRetailers}
             </NavDropdown>
             <Nav.Item className='m-auto'>
@@ -80,7 +107,7 @@ const FiltersNavbar = () => {
                 <Form.Check
                   type='checkbox'
                   id='exclude-expired'
-                  onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, excludeExpired: evt.target.checked ? 0 : 1 }))}
+                  onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, excludeExpired: evt.target.checked ? 1 : 0 }))}
                   label='Exclude expired'
                 />
               </Form>
@@ -88,10 +115,10 @@ const FiltersNavbar = () => {
             <Nav.Item>
               <InputGroup>
                 <FormControl
-                  type="text"
+                  type="number"
+                  value={filters.maxDistance}
                   onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, maxDistance: parseInt(evt.target.value) }))}
                   placeholder='Max distance'
-                  value={0}
                 />
               </InputGroup>
             </Nav.Item>
