@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -6,6 +6,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
+
 import Button from 'react-bootstrap/Button';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,17 +14,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { fetchLeaflets, filterLeaflets } from "../../actions";
 
-import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
-import { SliderRail, Handle, Track } from '../Slider/Slider';
 
 
 import './FiltersNavbar.scss';
 import { Retailer } from '@src/types/dataTypes';
-const sliderStyle = {
-  position: 'relative' as 'relative',
-  width: '100%',
-  touchAction: 'none',
-};
 
 
 const FiltersNavbar = () => {
@@ -37,35 +31,21 @@ const FiltersNavbar = () => {
 
   // Initialize double slider
 
-  const domain = [0, 70];
-  const [update, setUpdate] = useState<ReadonlyArray<number>>([0, 30]);
-  const [values, setValues] = useState<ReadonlyArray<number>>([0, 30]);
 
-  const onUpdate = (update: ReadonlyArray<number>) => {
-    setUpdate(update);
-  };
-  console.log(update);
-
-  const onChange = (values: ReadonlyArray<number>) => {
-    setValues(values);
-    dispatch(filterLeaflets(leaflets, { ...filters, offset: values[0], limit: values[1] }));
-  };
   const getRetailerNameFromId = (id: string) => {
     return retailers.filter(item => {
       return (item.id == id)
     })[0].name;
   };
-  console.log(values);
   const listRetailers = retailers.map((item: Retailer) =>
-    <Form.Check
-      key={`default-${item.id}`} className='mb-3 mt-3'
-      type='radio'
-      id={`${item.id}`}
-      label={`${item.name}`}
-      onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, retailerId: evt.target.id }))}
-    />
+    <NavDropdown.Item
+      key={item.id}
+      active={item.id == filters.retailerId}
+      onClick={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, retailerId: item.id }))}
+      as="li" >
+      {item.name}
+    </NavDropdown.Item >
   );
-  console.log(listRetailers);
   return (
     <Navbar sticky='top' bg='light' expand='lg'>
       <Container>
@@ -83,60 +63,17 @@ const FiltersNavbar = () => {
               </InputGroup>
             </Nav.Item>
             <NavDropdown title='Set offset and limit' id='basic-nav-dropdown'>
-              <NavDropdown.Item>Offset: {values[0]}</NavDropdown.Item>
-              <NavDropdown.Item>Limit: {values[1]}</NavDropdown.Item>
+              <NavDropdown.Item>Offset: {filters.offset}</NavDropdown.Item>
+              <NavDropdown.Item>Limit: {filters.limit}</NavDropdown.Item>
               <NavDropdown.Divider />
 
               <NavDropdown.Item>
-                <Slider
-                  className='pt-2 pb-2'
-                  mode={2}
-                  step={1}
-                  domain={domain}
-                  rootStyle={sliderStyle}
-                  onUpdate={onUpdate}
-                  onChange={onChange}
-                  values={values}
-                >
-                  <Rail>
-                    {({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}
-                  </Rail>
-                  <Handles>
-                    {({ handles, getHandleProps }) => (
-                      <div className='slider-handles'>
-                        {handles.map((handle) => (
-                          <Handle
-                            key={handle.id}
-                            handle={handle}
-                            domain={domain}
-                            getHandleProps={getHandleProps}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </Handles>
-                  <Tracks right={false}>
-                    {({ tracks, getTrackProps }) => (
-                      <div className='slider-tracks'>
-                        {tracks.map(({ id, source, target }) => (
-                          <Track
-                            key={id}
-                            source={source}
-                            target={target}
-                            getTrackProps={getTrackProps}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </Tracks>
-                </Slider></NavDropdown.Item>
+              </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title={filters.retailerId != "" ? getRetailerNameFromId(filters.retailerId) : 'Filter by retailer'} id='basic-nav-dropdown'>
-              < NavDropdown.Item >
-                <Form >
-                  {listRetailers}
-                </Form>
-              </NavDropdown.Item>
+              <NavDropdown.Item onClick={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, retailerId: "" }))}
+              >None</NavDropdown.Item>
+              {listRetailers}
             </NavDropdown>
             <Nav.Item className='m-auto'>
               <Form>

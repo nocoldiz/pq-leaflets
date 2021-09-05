@@ -11,7 +11,6 @@ export const fetchLeaflets = (req: LeafletsRequest, refresh: boolean) => (dispat
     loading: true
   });
 
-  console.log(req);
 
   axios.get(`${baseUrl}/api/leaflets/filter`, {
     params: {
@@ -43,8 +42,6 @@ export const fetchLeaflets = (req: LeafletsRequest, refresh: boolean) => (dispat
       return !duplicate;
     });
 
-    console.log(retailers);
-
     dispatch({
       type: ActionType.FETCH_LEAFLETS_SUCCESS,
       loading: false,
@@ -69,7 +66,6 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
   const nameFilter = filters.name.toLowerCase();
   const maxDistanceFilter = filters.maxDistance;
   const retailerIdFilter = filters.retailerId;
-  console.log(retailerIdFilter);
 
   let filteredLeaflets = leaflets.filter(item => {
 
