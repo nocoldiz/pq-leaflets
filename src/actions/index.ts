@@ -42,6 +42,8 @@ export const fetchLeaflets = (req: LeafletsRequest, refresh: boolean) => (dispat
       return !duplicate;
     });
 
+    console.log(responseData);
+
     dispatch({
       type: ActionType.FETCH_LEAFLETS_SUCCESS,
       loading: false,
@@ -73,7 +75,7 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
       item.name.toLowerCase().indexOf(nameFilter) >= 0 ||
       item.retailer.name.toLowerCase().indexOf(nameFilter) >= 0 ||
       item.retailer.distance <= maxDistanceFilter ||
-      item.retailer.id == retailerIdFilter
+      item.retailer.id === retailerIdFilter
     )
   }).slice(filters.offset, filters.limit);
 
