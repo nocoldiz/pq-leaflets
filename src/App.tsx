@@ -15,6 +15,7 @@ const App = () => {
   const leaflets = useSelector((state: RootState) => state.leafletsReducer.filteredLeaflets);
   useEffect(() => {
     dispatch(fetchLeaflets(filters, false))
+
   }, []);
 
   const listItems = leaflets.map((item: LeafletItem) =>

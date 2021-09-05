@@ -63,9 +63,13 @@ export const fetchLeaflets = (req: LeafletsRequest, refresh: boolean) => (dispat
 
 export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRequest) => (dispatch: Dispatch<ApiDispatchTypes>) => {
   // Nota: la richiesta API è case sensitive, per comodità rendo il filtro locale non case sensitive
-  const nameFilter = filters.name.toUpperCase();
-  const retailerIdFilter = filters.retailerId;
-  const maxDistanceFilter = filters.maxDistance | 0;
+  let nameFilter = filters.name.toUpperCase();
+  let retailerIdFilter = filters.retailerId;
+  let maxDistanceFilter = filters.maxDistance | 0;
+  // Impedisce ad offset e limit di andare sotto 0
+  if (filters.offset <= 0) { filters.offset = 0 }
+  if (filters.limit <= 0) { filters.limit = 0 }
+
 
   let filteredLeaflets = leaflets.filter(item => {
     return ((item.name.toUpperCase().indexOf(nameFilter) >= 0) || (item.retailer.name.toUpperCase().indexOf(nameFilter) >= 0))
@@ -86,8 +90,6 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
   }
   console.log(filteredLeaflets);
   console.log(filters);
-
-
   dispatch({
     type: ActionType.FILTER_LEAFLETS,
     filters: filters,
@@ -97,76 +99,53 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
 
 
 export const sortLeaflets = (leaflets: Array<LeafletItem>, sortBy: string, filters: LeafletsRequest) => (dispatch: Dispatch<ApiDispatchTypes>) => {
-  console.log("sorty by " + sortBy);
   let activeSort = filters.sort.split(',');
-
   switch (sortBy) {
     case "priority":
       activeSort[0] = "priority";
+      leaflets.sort((a, b) => (a.retailer.priority - b.retailer.priority));
       break;
     case "-priority":
       activeSort[0] = "-priority";
+      leaflets.sort((a, b) => (b.retailer.priority - a.retailer.priority));
       break;
     case "expTimestamp":
       activeSort[1] = "expTimestamp";
+      leaflets.sort((a, b) => (a.expTimestamp - b.expTimestamp));
       break;
     case "-expTimestamp":
       activeSort[1] = "-expTimestamp";
+      leaflets.sort((a, b) => (b.expTimestamp - a.expTimestamp));
       break;
     case "distance":
       activeSort[2] = "distance";
+      leaflets.sort((a, b) => (a.retailer.distance - b.retailer.distance));
       break;
     case "-distance":
       activeSort[2] = "-distance";
+      leaflets.sort((a, b) => (b.retailer.distance - a.retailer.distance));
       break;
     case "retailerName":
       activeSort[3] = "retailerName";
+      leaflets.sort((a, b) => (a.retailer.name < b.retailer.name ? -1 : 1));
       break;
     case "-retailerName":
       activeSort[3] = "-retailerName";
+      leaflets.sort((a, b) => (a.retailer.name > b.retailer.name ? -1 : 1));
       break;
     case "leafletName":
       activeSort[4] = "leafletName";
+      leaflets.sort((a, b) => (a.name < b.name ? -1 : 1));
       break;
     case "-leafletName":
       activeSort[4] = "-leafletName";
+      leaflets.sort((a, b) => (a.name > b.name ? -1 : 1));
+      break;
+    default:
       break;
   }
-
   console.log(activeSort);
-  if (activeSort[0] === "priority") {
-    leaflets.sort((a, b) => (a.retailer.priority < b.retailer.priority ? -1 : 1));
-  }
-  if (activeSort[0] === "-priority") {
-    leaflets.sort((a, b) => (a.retailer.priority > b.retailer.priority ? -1 : 1));
-  }
-  if (activeSort[1] === "expTimestamp") {
-    leaflets.sort((a, b) => (a.expTimestamp < b.expTimestamp ? -1 : 1));
-  }
-  if (activeSort[1] === "-expTimestamp") {
-    leaflets.sort((a, b) => (a.expTimestamp > b.expTimestamp ? -1 : 1));
-  }
-  if (activeSort[2] === "distance") {
-    leaflets.sort((a, b) => (a.retailer.distance < b.retailer.distance ? -1 : 1));
-  }
-  if (activeSort[2] === "-distance") {
-    leaflets.sort((a, b) => (a.retailer.distance > b.retailer.distance ? -1 : 1));
-  }
-  if (activeSort[3] === "retailerName") {
-    leaflets.sort((a, b) => (a.retailer.name < b.retailer.name ? -1 : 1));
-  }
-  if (activeSort[3] === "-retailerName") {
-    leaflets.sort((a, b) => (a.retailer.name > b.retailer.name ? -1 : 1));
-  }
-  if (activeSort[4] === "leafletName") {
-    leaflets.sort((a, b) => (a.name < b.name ? -1 : 1));
-  }
-  if (activeSort[4] === "-leafletName") {
-    leaflets.sort((a, b) => (a.name > b.name ? -1 : 1));
-  }
-  //desc arrayOfObjects.sort((a, b) => (a.propertyToSortBy > b.propertyToSortBy ? -1 : 1));
-
-  console.log(leaflets);
+  console.log(activeSort.join(","));
 
 
   dispatch({

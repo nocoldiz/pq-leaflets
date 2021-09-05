@@ -1,8 +1,8 @@
 
 
 export interface LeafletsRequest {
-    offset?: number;
-    limit?: number;
+    offset: number;
+    limit: number;
     name: string;
     retailerId: string;
     excludeExpired: number;
