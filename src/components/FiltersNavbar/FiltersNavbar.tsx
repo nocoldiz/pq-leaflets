@@ -50,17 +50,20 @@ const FiltersNavbar = () => {
     setValues(values);
     dispatch(filterLeaflets(leaflets, { ...filters, offset: values[0], limit: values[1] }));
   };
+  const getRetailerNameFromId = (id: string) => {
+    return retailers.filter(item => {
+      return (item.id == id)
+    })[0].name;
+  };
   console.log(values);
   const listRetailers = retailers.map((item: Retailer) =>
-    <div key={`default-${item.id}`} className='mb-3 mt-3'>
-      <Form.Check
-        type='radio'
-        id={`${item.id}`}
-        label={`${item.name}`}
-        onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, retailerId: evt.target.id }))}
-
-      />
-    </div>
+    <Form.Check
+      key={`default-${item.id}`} className='mb-3 mt-3'
+      type='radio'
+      id={`${item.id}`}
+      label={`${item.name}`}
+      onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, retailerId: evt.target.id }))}
+    />
   );
   console.log(listRetailers);
   return (
@@ -128,8 +131,8 @@ const FiltersNavbar = () => {
                   </Tracks>
                 </Slider></NavDropdown.Item>
             </NavDropdown>
-            <NavDropdown title='Filter by retailer' id='basic-nav-dropdown'>
-              <NavDropdown.Item >
+            <NavDropdown title={filters.retailerId != "" ? getRetailerNameFromId(filters.retailerId) : 'Filter by retailer'} id='basic-nav-dropdown'>
+              < NavDropdown.Item >
                 <Form >
                   {listRetailers}
                 </Form>

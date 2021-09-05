@@ -87,10 +87,7 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
     filteredLeaflets = filteredLeaflets.filter(item => {
       let d = new Date(0);
       d.setUTCSeconds(item.expTimestamp);
-
       return d.getTime() > today.getTime()
-
-
     })
   }
   console.log(filteredLeaflets);
