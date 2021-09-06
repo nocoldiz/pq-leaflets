@@ -1,5 +1,7 @@
 # PQ-Leaflets
 
+![alt text](https://github.com/nocoldiz/pq-leaflets/blob/master/cover.png)
+
 ## Build Scripts
 
 ### Installa dipendenze
