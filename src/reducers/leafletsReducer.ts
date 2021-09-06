@@ -42,7 +42,6 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
                     filteredLeaflets: action.payload.data.leaflets,
                 };
             }
-
         case ActionType.FETCH_LEAFLETS_ERROR:
             return {
                 ...state,

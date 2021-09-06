@@ -1,5 +1,3 @@
-
-
 export interface LeafletsRequest {
     offset: number;
     limit: number;
@@ -19,8 +17,6 @@ export interface Retailer {
     id: string;
     name: string;
 }
-
-
 interface ImageItem {
     xs: string;
     sm: string;
@@ -35,14 +31,12 @@ interface RetailerItem {
     priority: number;
     images: ImageItem;
 }
-
 export interface LeafletItem {
     id: string;
     name: string;
     expTimestamp: number;
     retailer: RetailerItem;
 }
-
 export interface LeafletsResponse {
     data: {
         query: QueryItem;

@@ -13,7 +13,6 @@ export enum ActionType {
     SORT_LEAFLETS = "sort_leaflets"
 
 }
-
 export interface InitialState {
     loading: boolean,
     leaflets: Array<LeafletItem>,

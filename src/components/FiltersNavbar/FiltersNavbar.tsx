@@ -5,37 +5,28 @@ import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
-
 import Button from 'react-bootstrap/Button';
-
 import { useDispatch, useSelector } from 'react-redux';
-
 import { RootState } from '../../store';
 import { fetchLeaflets, filterLeaflets, sortLeaflets } from "../../actions";
-
-
-
 import './FiltersNavbar.scss';
 import { Retailer } from '@src/types/dataTypes';
 
-
 const FiltersNavbar = () => {
-
-
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.leafletsReducer.filters);
-
   const leaflets = useSelector((state: RootState) => state.leafletsReducer.leaflets);
   const retailers = useSelector((state: RootState) => state.leafletsReducer.retailers);
+  const filteredLeaflets = useSelector((state: RootState) => state.leafletsReducer.filteredLeaflets);
 
-  // Initialize double slider
-
-
+  //Restituisce il nome del retailer dall'id
   const getRetailerNameFromId = (id: string) => {
     return retailers.filter(item => {
       return (item.id == id)
     })[0].name;
   };
+
+  //Controlla se un filtro è in ordine asc o desc
   const checkOrder = (name: string) => {
     return filters.sort.indexOf(name)
   };
@@ -65,24 +56,23 @@ const FiltersNavbar = () => {
               </Form.Group>
             </Nav.Item>
             <NavDropdown title='Sort by' id='basic-nav-dropdown'>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-leafletName") !== -1 ? "leafletName" : "-leafletName", filters))} >
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(filteredLeaflets, checkOrder("-leafletName") !== -1 ? "leafletName" : "-leafletName", filters))} >
                 <span className="pr-3">{checkOrder("-leafletName") !== -1 ? "▼" : "▲"}</span>
                 Leaflet name
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-retailerName") !== -1 ? "retailerName" : "-retailerName", filters))} >
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(filteredLeaflets, checkOrder("-retailerName") !== -1 ? "retailerName" : "-retailerName", filters))} >
                 <span className="pr-3">{checkOrder("-retailerName") !== -1 ? "▼" : "▲"}</span>
                 Retailer name
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-distance") !== -1 ? "distance" : "-distance", filters))} >
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(filteredLeaflets, checkOrder("-distance") !== -1 ? "distance" : "-distance", filters))} >
                 <span className="pr-3">{checkOrder("-distance") !== -1 ? "▼" : "▲"}</span>
                 Distance
               </NavDropdown.Item>
-
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-expTimestamp") !== -1 ? "expTimestamp" : "-expTimestamp", filters))} >
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(filteredLeaflets, checkOrder("-expTimestamp") !== -1 ? "expTimestamp" : "-expTimestamp", filters))} >
                 <span className="pr-3">{checkOrder("-expTimestamp") !== -1 ? "▼" : "▲"}</span>
                 ExpTimestamp
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-priority") !== -1 ? "priority" : "-priority", filters))} >
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(filteredLeaflets, checkOrder("-priority") !== -1 ? "priority" : "-priority", filters))} >
                 <span className="mr-3">{checkOrder("-priority") !== -1 ? "▼" : "▲"}</span>
                 Priority
               </NavDropdown.Item>
@@ -93,7 +83,6 @@ const FiltersNavbar = () => {
               </NavDropdown.Item>
               {listRetailers}
             </NavDropdown>
-
             <NavDropdown title='Set offset, limit and distance' id='basic-nav-dropdown'>
               <Nav.Item className="p-2">
                 <Form>
@@ -138,7 +127,6 @@ const FiltersNavbar = () => {
                 </Form>
               </Nav.Item>
             </NavDropdown>
-
             <Nav.Item className='ml-4'>
               <Form className="nav-link">
                 <Form.Check
@@ -150,8 +138,7 @@ const FiltersNavbar = () => {
               </Form>
             </Nav.Item>
             <Nav.Item>
-              <Button variant="primary" onClick={() => dispatch(fetchLeaflets(filters, true))}>Filter from API</Button>{' '}
-
+              <Button variant="primary" onClick={() => dispatch(fetchLeaflets(filters, true))}>Filter from API</Button>
             </Nav.Item>
           </Nav>
         </Navbar.Collapse>
