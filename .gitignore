@@ -1,0 +1,6 @@
+.vscode
+.husky
+.DS_Store
+node_modules
+coverage
+docs
