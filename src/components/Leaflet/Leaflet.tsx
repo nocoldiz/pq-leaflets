@@ -14,7 +14,9 @@ const Leaflet = (props: LeafletItem) => {
 
     return (
         <Card className="layout">
-            <Card.Img variant="top" src={props.retailer.images.lg} />
+            <div className="card-x">
+                <Card.Img variant="top" src={props.retailer.images.lg} />
+            </div>
             <ListGroup>
                 <ListGroup.Item>
                     <span className="list-title">Name:</span>

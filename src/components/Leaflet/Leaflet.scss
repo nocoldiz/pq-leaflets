@@ -17,3 +17,33 @@
   font-weight: bold;
   margin-right: 0.3rem;
 }
+.card-x {
+  height: auto;
+}
+
+@media (min-width: 576px) {
+  .card-x {
+    height: 175px;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .card-x {
+    height: 242px;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .card-x {
+    height: 333px;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .card-x {
+    height: 188px;
+  }
+}

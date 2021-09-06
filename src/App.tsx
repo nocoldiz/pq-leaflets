@@ -5,6 +5,7 @@ import { fetchLeaflets } from "./actions";
 import { LeafletItem } from "./types/dataTypes";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Alert from 'react-bootstrap/Alert';
 import Col from 'react-bootstrap/Col';
 import Leaflet from './components/Leaflet';
 import FiltersNavbar from './components/FiltersNavbar';
@@ -30,6 +31,11 @@ const App = () => {
       <Container>
         <Row>
           {listItems}
+          {leaflets.length == 0 ? (<Alert variant="secondary">
+            No leaflet found
+          </Alert>
+          ) : ""}
+
         </Row>
       </Container>
     </>
