@@ -23,13 +23,13 @@ const leafletsReducer = (state: InitialState = initialState, action: ApiDispatch
                 loading: true
             };
         case ActionType.FETCH_LEAFLETS_SUCCESS:
+            // Refresh evita che l'array di retailers venga sovrascritto
             if (action.refresh) {
-                console.log("refreshing from API");
-                console.log(action.payload)
                 return {
                     ...state,
                     loading: false,
                     response: action.payload,
+                    leaflets: action.payload.data.leaflets,
                     filteredLeaflets: action.payload.data.leaflets,
                 };
             } else {

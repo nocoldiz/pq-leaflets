@@ -1,7 +1,6 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -41,7 +40,6 @@ const FiltersNavbar = () => {
     return filters.sort.indexOf(name)
   };
 
-  filters.sort.indexOf("-priority") !== -1
   const listRetailers = retailers.map((item: Retailer) =>
     <NavDropdown.Item
       key={item.id}
@@ -67,28 +65,36 @@ const FiltersNavbar = () => {
               </Form.Group>
             </Nav.Item>
             <NavDropdown title='Sort by' id='basic-nav-dropdown'>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-priority") !== -1 ? "priority" : "-priority", filters))} >
-                <span className="mr-3">{checkOrder("-priority") !== -1 ? "▼" : "▲"}</span>
-                Priority
-              </NavDropdown.Item>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-expTimestamp") !== -1 ? "expTimestamp" : "-expTimestamp", filters))} >
-                <span className="pr-3">{checkOrder("-expTimestamp") !== -1 ? "▼" : "▲"}</span>
-                ExpTimestamp
-              </NavDropdown.Item>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-distance") !== -1 ? "distance" : "-distance", filters))} >
-                <span className="pr-3">{checkOrder("-distance") !== -1 ? "▼" : "▲"}</span>
-                Distance
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-leafletName") !== -1 ? "leafletName" : "-leafletName", filters))} >
+                <span className="pr-3">{checkOrder("-leafletName") !== -1 ? "▼" : "▲"}</span>
+                Leaflet name
               </NavDropdown.Item>
               <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-retailerName") !== -1 ? "retailerName" : "-retailerName", filters))} >
                 <span className="pr-3">{checkOrder("-retailerName") !== -1 ? "▼" : "▲"}</span>
                 Retailer name
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-leafletName") !== -1 ? "leafletName" : "-leafletName", filters))} >
-                <span className="pr-3">{checkOrder("-leafletName") !== -1 ? "▼" : "▲"}</span>
-                Leaflet name
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-distance") !== -1 ? "distance" : "-distance", filters))} >
+                <span className="pr-3">{checkOrder("-distance") !== -1 ? "▼" : "▲"}</span>
+                Distance
+              </NavDropdown.Item>
+
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-expTimestamp") !== -1 ? "expTimestamp" : "-expTimestamp", filters))} >
+                <span className="pr-3">{checkOrder("-expTimestamp") !== -1 ? "▼" : "▲"}</span>
+                ExpTimestamp
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={(evt) => dispatch(sortLeaflets(leaflets, checkOrder("-priority") !== -1 ? "priority" : "-priority", filters))} >
+                <span className="mr-3">{checkOrder("-priority") !== -1 ? "▼" : "▲"}</span>
+                Priority
               </NavDropdown.Item>
             </NavDropdown>
-            <NavDropdown title='Set offset and limit' id='basic-nav-dropdown'>
+            <NavDropdown className="retailers-dropdown" title={filters.retailerId != "" ? getRetailerNameFromId(filters.retailerId) : 'Filter by retailer'} id='basic-nav-dropdown'>
+              <NavDropdown.Item onClick={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, retailerId: "" }))}>
+                None
+              </NavDropdown.Item>
+              {listRetailers}
+            </NavDropdown>
+
+            <NavDropdown title='Set offset, limit and distance' id='basic-nav-dropdown'>
               <Nav.Item className="p-2">
                 <Form>
                   <Form.Group>
@@ -117,25 +123,22 @@ const FiltersNavbar = () => {
                   </Form.Group>
                 </Form>
               </Nav.Item>
+              <Nav.Item className="p-2">
+                <Form>
+                  <Form.Group>
+                    <Form.Label>Max distance:</Form.Label>
+                    <Form.Control
+                      required
+                      name="maxDistance"
+                      type="number"
+                      value={filters.maxDistance}
+                      onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, maxDistance: parseInt(evt.target.value) }))}
+                    />
+                  </Form.Group>
+                </Form>
+              </Nav.Item>
             </NavDropdown>
-            <NavDropdown className="retailers-dropdown" title={filters.retailerId != "" ? getRetailerNameFromId(filters.retailerId) : 'Filter by retailer'} id='basic-nav-dropdown'>
-              <NavDropdown.Item onClick={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, retailerId: "" }))}>
-                None
-              </NavDropdown.Item>
-              {listRetailers}
-            </NavDropdown>
-            <Nav.Item>
-              <InputGroup>
-                <span className="nav-link">Distance:</span>
-                <FormControl
-                  type="number"
-                  className="distance-box"
-                  value={filters.maxDistance}
-                  onChange={(evt) => dispatch(filterLeaflets(leaflets, { ...filters, maxDistance: parseInt(evt.target.value) }))}
-                  placeholder='Max distance'
-                />
-              </InputGroup>
-            </Nav.Item>
+
             <Nav.Item className='ml-4'>
               <Form className="nav-link">
                 <Form.Check
@@ -147,7 +150,7 @@ const FiltersNavbar = () => {
               </Form>
             </Nav.Item>
             <Nav.Item>
-              <Button variant="primary" onClick={() => dispatch(fetchLeaflets(filters, true))}>Fetch from API</Button>{' '}
+              <Button variant="primary" onClick={() => dispatch(fetchLeaflets(filters, true))}>Filter from API</Button>{' '}
 
             </Nav.Item>
           </Nav>

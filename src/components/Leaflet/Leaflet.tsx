@@ -21,7 +21,7 @@ const Leaflet = (props: LeafletItem) => {
                     {props.name}
                 </ListGroup.Item>
                 <ListGroup.Item>
-                    <span className="list-title">Retailer:</span>
+                    <span className="list-title">Retailer name:<br></br></span>
                     {props.retailer.name}
                 </ListGroup.Item>
                 <ListGroup.Item>
@@ -37,7 +37,7 @@ const Leaflet = (props: LeafletItem) => {
                     {props.retailer.priority}
                 </ListGroup.Item>
             </ListGroup>
-        </Card>
+        </Card >
     );
 }
 

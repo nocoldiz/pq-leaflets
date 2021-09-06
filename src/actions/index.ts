@@ -10,8 +10,7 @@ export const fetchLeaflets = (req: LeafletsRequest, refresh: boolean) => (dispat
     type: ActionType.FETCH_LEAFLETS_PENDING,
     loading: true
   });
-
-
+  // Richiesta ad API
   axios.get(`${baseUrl}/api/leaflets/filter`, {
     params: {
       offset: req.offset,
@@ -31,11 +30,10 @@ export const fetchLeaflets = (req: LeafletsRequest, refresh: boolean) => (dispat
     }
     //Crea un array di retailers
     let retailers: Array<Retailer> = [];
-
     responseData.data.leaflets.forEach(item => {
       retailers.push({ id: item.retailer.id, name: item.retailer.name });
     });
-
+    //Verifica che non ci siano duplicati
     retailers = retailers.filter(el => {
       const duplicate = seen.has(el.id);
       seen.add(el.id);
@@ -65,20 +63,26 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
   // Nota: la richiesta API è case sensitive, per comodità rendo il filtro locale non case sensitive
   let nameFilter = filters.name.toUpperCase();
   let retailerIdFilter = filters.retailerId;
-  let maxDistanceFilter = filters.maxDistance | 0;
+  //Controlla che filtri numerici non siano NaN
+  filters.maxDistance = filters.maxDistance || 0;
+  filters.offset = filters.offset || 0;
+  filters.limit = filters.limit || 0;
+
   // Impedisce ad offset e limit di andare sotto 0
+  if (filters.maxDistance <= 0) { filters.maxDistance = 0 }
   if (filters.offset <= 0) { filters.offset = 0 }
   if (filters.limit <= 0) { filters.limit = 0 }
 
-
+  // Applica i vari filtri e poi limita l'array in base ad offset e limit
   let filteredLeaflets = leaflets.filter(item => {
     return ((item.name.toUpperCase().indexOf(nameFilter) >= 0) || (item.retailer.name.toUpperCase().indexOf(nameFilter) >= 0))
   }).filter(item3 => {
     return (retailerIdFilter != "" ? item3.retailer.id === retailerIdFilter : true)
   }).filter(item4 => {
-    return (maxDistanceFilter != 0 ? item4.retailer.distance <= maxDistanceFilter : true)
+    return (filters.maxDistance != 0 ? item4.retailer.distance <= filters.maxDistance : true)
   }).slice(filters.offset, filters.limit);
 
+  // Nasconde i leaflets scaduta se opzione è abilitata
   if (filters.excludeExpired == 1) {
     const today = new Date();
     console.log("filtering expired")
@@ -88,8 +92,6 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
       return d.getTime() > today.getTime()
     })
   }
-  console.log(filteredLeaflets);
-  console.log(filters);
   dispatch({
     type: ActionType.FILTER_LEAFLETS,
     filters: filters,
@@ -100,6 +102,7 @@ export const filterLeaflets = (leaflets: Array<LeafletItem>, filters: LeafletsRe
 
 export const sortLeaflets = (leaflets: Array<LeafletItem>, sortBy: string, filters: LeafletsRequest) => (dispatch: Dispatch<ApiDispatchTypes>) => {
   let activeSort: string = filters.sort;
+  // Controlla algoritmo di sorting e lo applica all'array di leaflets
   switch (sortBy) {
     case "priority":
       activeSort = "priority";
